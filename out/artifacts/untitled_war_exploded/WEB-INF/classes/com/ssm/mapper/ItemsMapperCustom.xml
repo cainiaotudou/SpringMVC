@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssm.mapper.ItemsMapperCustom">
+
+    <!--定义商品拆线呢的sql片段
+    商品查询条件通过ItemsQuery包装对象中ItemsUp属性传递-->
+    <sql id="query_items_where">
+        <if test="itemsUp != null">
+            <if test="itemsUp.name != null and itemsUp.name != ''">
+                items.name like '%${itemsUp.name}%'
+            </if>
+        </if>
+    </sql>
+
+    <!--商品列表查询
+    parameterType 传入包装对象（包装了查询对象）
+    resultType 建议使用扩展对象-->
+    <select id="findItemsList" parameterType="com.ssm.domain.ItemsQuery" resultType="com.ssm.domain.ItemsUp">
+        select items.* from items
+        <where>
+            <include refid="query_items_where"></include>
+        </where>
+    </select>
+    <!--<select id="findItemsList"  resultType="ssm.po.ItemsUp">-->
+        <!--select items.* from items-->
+        <!--<where>-->
+            <!--<include refid="query_items_where"></include>-->
+        <!--</where>-->
+    <!--</select>-->
+
+</mapper>
